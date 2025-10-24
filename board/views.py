@@ -56,3 +56,11 @@ def ssti_demo(request):
         t = Template(expr)
         rendered = t.render(Context({'user': request.user, 'posts': Post.objects.all()}))
     return render(request, 'board/ssti.html', {'rendered': rendered, 'expr': expr})
+
+def home(request):
+    query = request.GET.get('query', '')
+    if query:
+        posts = Post.objects.filter(title__icontains=query)
+    else:
+        posts = Post.objects.all().order_by('-created_at')[:5]  # 최근 5개 포스트
+    return render(request, 'board/home.html', {'posts': posts, 'query': query})
