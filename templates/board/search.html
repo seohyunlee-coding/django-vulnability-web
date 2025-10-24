@@ -1,0 +1,17 @@
+{% extends 'board/base.html' %}
+
+{% block content %}
+<h2>Search (SQLi demo)</h2>
+<form method="get">
+  <input name="q" value="{{ q }}" placeholder="search title..." />
+  <button type="submit">Search</button>
+</form>
+<ul>
+  {% for p in posts %}
+  <li><strong>{{ p.title }}</strong> - {{ p.body }}</li>
+  {% empty %}
+  <li>No results</li>
+  {% endfor %}
+</ul>
+<p>Note: This search uses an intentionally unsafe raw SQL query (vulnerable to SQL Injection).</p>
+{% endblock %}
