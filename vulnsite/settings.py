@@ -68,3 +68,8 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
+
+# After login, redirect users to home
+LOGIN_REDIRECT_URL = '/'
+# After logout, redirect to home as well
+LOGOUT_REDIRECT_URL = '/'

@@ -29,6 +29,7 @@
     <a href="{% url 'logout' %}?next={% url 'home' %}">Logout</a>
     {% else %}
     <a href="{% url 'login' %}">Login</a>
+    <a href="{% url 'signup' %}">Sign up</a>
     {% endif %}
   </nav>
 

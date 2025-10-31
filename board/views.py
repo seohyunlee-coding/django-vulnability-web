@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login as auth_login
+from django.contrib.auth.forms import UserCreationForm
 from django.db import connection
 from django.views.decorators.csrf import csrf_exempt
 from django.template import Template, Context
@@ -30,6 +32,23 @@ def my_posts(request):
     """Show posts authored by the logged-in user."""
     posts = Post.objects.filter(author=request.user).order_by('-created_at')
     return render(request, 'board/my_posts.html', {'posts': posts})
+
+
+def signup(request):
+    """User registration using Django's built-in UserCreationForm.
+
+    On success the new user is automatically logged in and redirected to home.
+    """
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            # Log the user in after successful signup
+            auth_login(request, user)
+            return redirect('home')
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration/signup.html', {'form': form})
 
 def search_raw(request):
     """Deliberately unsafe raw SQL search to demonstrate SQL injection."""

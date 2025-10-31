@@ -8,6 +8,9 @@
   {% endif %}
   <form method="post">
     {% csrf_token %}
+    {% if next %}
+    <input type="hidden" name="next" value="{{ next }}" />
+    {% endif %}
     <p>
       <label for="id_username">Username:</label><br>
       {{ form.username }}
