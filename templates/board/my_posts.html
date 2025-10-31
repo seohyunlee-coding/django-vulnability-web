@@ -1,0 +1,18 @@
+{% extends 'board/base.html' %}
+
+{% block content %}
+<div style="max-width:900px; margin:40px auto;">
+  <h2>My Posts</h2>
+  <div>
+    {% for post in posts %}
+    <div style="padding:16px; border-bottom:1px solid #e5e7eb;">
+      <h3>{{ post.title }}</h3>
+      <p style="color:#6b7280; font-size:0.9rem;">{{ post.created_at }}</p>
+      <p>{{ post.body|linebreaksbr }}</p>
+    </div>
+    {% empty %}
+    <p>No posts yet.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

@@ -1,15 +1,26 @@
 {% extends 'board/base.html' %}
 
 {% block content %}
-<h2>Create a Post</h2>
-<form method="post">
-  {% csrf_token %}
-  <label for="title">Title:</label><br>
-  <input type="text" id="title" name="title" style="width:80%" required><br><br>
+<div style="max-width:720px; margin:40px auto; font-family: 'Inter', sans-serif;">
+  <h2 style="color:#1E3A8A; margin-bottom:20px;">Create a Post</h2>
 
-  <label for="content">Content:</label><br>
-  <textarea id="content" name="content" rows="10" style="width:80%" required></textarea><br><br>
+  {% if error %}
+  <p style="color:red;">{{ error }}</p>
+  {% endif %}
 
-  <button type="submit">Submit</button>
-</form>
+  <form method="post">
+    {% csrf_token %}
+    {% if form.errors %}
+    <div style="color:red">Please correct the errors below.</div>
+    {% endif %}
+    <div style="max-width:800px">
+      {{ form.as_p }}
+    </div>
+
+    <button type="submit"
+      style="padding:10px 20px; background:linear-gradient(90deg,#85C1E9,#5DADE2); color:white; border:none; border-radius:8px; font-weight:700; cursor:pointer;">
+      Submit
+    </button>
+  </form>
+</div>
 {% endblock %}

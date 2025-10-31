@@ -3,16 +3,35 @@
 
 <head>
   <meta charset="utf-8" />
-  <title>Vuln Board</title>
+  <title>ThoughtBoard</title>
+  <style>
+    nav {
+      background: #f3f4f6;
+      padding: 12px 20px;
+    }
+
+    nav a {
+      margin-right: 12px;
+      text-decoration: none;
+      color: #1E3A8A;
+      font-weight: 600
+    }
+  </style>
 </head>
 
 <body>
-  <h1>Vuln Board (교육용)</h1>
   <nav>
-    <a href="/">Home</a> | <a href="/create/">Create</a> | <a href="/search/">Search (SQLi demo)</a> | <a
-      href="/ssti/">SSTI demo</a>
+    <a href="{% url 'home' %}">Home</a>
+    <a href="{% url 'create_post' %}">Write</a>
+    {% if user.is_authenticated %}
+    <a href="{% url 'my_posts' %}">My Posts</a>
+    <span style="margin-left:8px;">Logged in as {{ user.username }}</span>
+    <a href="{% url 'logout' %}?next={% url 'home' %}">Logout</a>
+    {% else %}
+    <a href="{% url 'login' %}">Login</a>
+    {% endif %}
   </nav>
-  <hr />
+
   {% block content %}{% endblock %}
 </body>
 

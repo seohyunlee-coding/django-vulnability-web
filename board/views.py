@@ -19,10 +19,17 @@ def create_post(request):
             p = form.save(commit=False)
             p.author = request.user
             p.save()
-            return redirect('index')
+            return redirect('home')
     else:
         form = PostForm()
-    return render(request, 'board/create.html', {'form': form})
+    return render(request, 'board/create_post.html', {'form': form})
+
+
+@login_required
+def my_posts(request):
+    """Show posts authored by the logged-in user."""
+    posts = Post.objects.filter(author=request.user).order_by('-created_at')
+    return render(request, 'board/my_posts.html', {'posts': posts})
 
 def search_raw(request):
     """Deliberately unsafe raw SQL search to demonstrate SQL injection."""
@@ -41,11 +48,10 @@ def search_raw(request):
 def delete_post(request, post_id):
     """CSRF exempt delete — intentional vulnerability."""
     post = get_object_or_404(Post, pk=post_id)
-    # Logical flaw: any authenticated user can delete any post
-    if request.user.is_authenticated:
+    # Only allow the post author to delete their post
+    if request.user.is_authenticated and request.user == post.author:
         post.delete()
-        return redirect('index')
-    return redirect('index')
+    return redirect('home')
 
 def ssti_demo(request):
     """Demonstrate a server-side template injection-like behavior by rendering user input as a template."""
